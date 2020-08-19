@@ -1,0 +1,18 @@
+spring:
+  freemarker:
+    template-loader-path: classpath:/templates/
+    prefer-file-system-access: false
+  application:
+    name: BOOT_SERVICE
+server:
+  port: 8086
+
+
+eureka:
+  instance:
+    hostname: eureka-service-8762.com
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-service-8761.com:8761/eureka/
