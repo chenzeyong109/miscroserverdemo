@@ -2,9 +2,8 @@ package com.example.boot.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class HystrixService {
 
     @HystrixCommand(fallbackMethod = "defaultStores")
