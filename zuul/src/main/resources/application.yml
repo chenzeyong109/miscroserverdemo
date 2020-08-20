@@ -3,9 +3,9 @@ spring:
     template-loader-path: classpath:/templates/
     prefer-file-system-access: false
   application:
-    name: RIBBON_SERVICE
+    name: ZUUL-SERVICE
 server:
-  port: 8088
+  port: 8090
 
 
 eureka:
