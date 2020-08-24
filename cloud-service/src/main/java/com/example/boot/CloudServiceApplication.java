@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 @EnableEurekaClient  //eureka 客户端
 @EnableCircuitBreaker  //hystrix 熔断配置
-public class BootApplication {
+public class CloudServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BootApplication.class, args);
+        SpringApplication.run(CloudServiceApplication.class, args);
     }
 
 }

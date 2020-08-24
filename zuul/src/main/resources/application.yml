@@ -23,3 +23,14 @@ eureka:
 #    eureka-service:
 #      path: /base/**
 #      url: http://127.0.0.1:8761/
+
+zuul:
+  routes:
+    CLOUD-SERVICE:
+      path: /cloud/**
+      url: CLOUD-SERVICE
+### Ribbon 配置
+#ribbon:
+#  eureka:
+#    # 禁止使用Eureka，使用 Ribbon 负载均衡功能,这种配置打开配合前面的url是真实访问url
+#    enabled: false
