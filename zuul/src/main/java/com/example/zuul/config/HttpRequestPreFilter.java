@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Zuul过滤器，必须继承ZuulFilter父类。
@@ -46,11 +48,18 @@ public class HttpRequestPreFilter extends ZuulFilter {
         // 3) 从请求中获取token
         String token = request.getParameter("access-token");
         // 4) 判断（如果没有token，认为用户还没有登录，返回401状态码）
-        if(token == null || "".equals(token.trim())){
+        if (token == null || "".equals(token.trim())) {
             // 没有token，认为登录校验失败，进行拦截
             currentContext.setSendZuulResponse(false);
             // 返回401状态码。也可以考虑重定向到登录页
             currentContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+            try {
+                HttpServletResponse response = currentContext.getResponse();
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().write("非法请求！");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // 如果校验通过，可以考虑吧用户信息放入上下文，继续向后执行
