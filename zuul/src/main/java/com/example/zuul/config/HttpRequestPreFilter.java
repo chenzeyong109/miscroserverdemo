@@ -1,10 +1,11 @@
-package com.example.zuul.filter;
+package com.example.zuul.config;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
  * shouldFilter、 run、 filterType、 filterOrder
  */
 @Component
-public class LoggerFilter extends ZuulFilter {
+public class HttpRequestPreFilter extends ZuulFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequestPreFilter.class);
 
     /**
      * 返回boolean类型。代表当前filter是否生效。
@@ -37,13 +38,22 @@ public class LoggerFilter extends ZuulFilter {
      */
     @Override
     public Object run() throws ZuulException {
-        // 通过zuul，获取请求上下文
-        RequestContext rc = RequestContext.getCurrentContext();
-        HttpServletRequest request = rc.getRequest();
+        // 登录校验逻辑
+        // 1）获取zuul提供的请求上下文对象（即是请求全部内容）
+        RequestContext currentContext = RequestContext.getCurrentContext();
+        // 2) 从上下文中获取request对象
+        HttpServletRequest request = currentContext.getRequest();
+        // 3) 从请求中获取token
+        String token = request.getParameter("access-token");
+        // 4) 判断（如果没有token，认为用户还没有登录，返回401状态码）
+        if(token == null || "".equals(token.trim())){
+            // 没有token，认为登录校验失败，进行拦截
+            currentContext.setSendZuulResponse(false);
+            // 返回401状态码。也可以考虑重定向到登录页
+            currentContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+        }
 
-        logger.info("过滤器的具体过滤方法.....method={},url={}",
-                request.getMethod(),request.getRequestURL().toString());
-        // 可以记录日志、鉴权，给维护人员记录提供定位协助、统计性能
+        // 如果校验通过，可以考虑吧用户信息放入上下文，继续向后执行
         return null;
     }
 

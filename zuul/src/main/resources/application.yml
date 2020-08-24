@@ -18,19 +18,22 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka-service-8761.com:8761/eureka/
     registry-fetch-interval-seconds: 30 # 表示eureka client间隔多久去拉取服务注册信息
-#zuul:
-#  routes:
-#    eureka-service:
-#      path: /base/**
-#      url: http://127.0.0.1:8761/
 
 zuul:
   routes:
     CLOUD-SERVICE:
       path: /cloud/**
       url: CLOUD-SERVICE
-### Ribbon 配置
+
+
+#zuul:
+#  routes:
+#    CLOUD-SERVICE:
+#      path:  /cloud/**
+#      url: http://127.0.0.1:8086/
+
+# Ribbon 配置
 #ribbon:
 #  eureka:
-#    # 禁止使用Eureka，使用 Ribbon 负载均衡功能,这种配置打开配合前面的url是真实访问url
+#    # 禁止使用Eureka，使用 Ribbon 负载均衡功能,这种配置打开是需要配合前面注释的url配置
 #    enabled: false
