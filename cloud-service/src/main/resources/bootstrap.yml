@@ -1,5 +1,5 @@
  spring:
-    application:
+   application:
       name: CLOUD-SERVICE
    cloud:
       config:
@@ -8,5 +8,9 @@
           service-id: CONFIG-SERVER  # 注册中心的服务名
         profile: pro  # 指定配置文件的环境
         fail-fast: true
-
+   rabbitmq:
+      host: 127.0.0.1
+      port: 5672
+      username: admin
+      password: admin
 
